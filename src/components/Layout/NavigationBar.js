@@ -8,7 +8,7 @@ export default function NavigationBar() {
                 <Nav.Link href="#about">About</Nav.Link>
                 <Nav.Link href="#documentation">Documentation</Nav.Link>
             </Nav>
-                <a href="https://github.com/Joeyryanbridges">
+                <a href="https://github.com/agnenevulyte">
                     <Image src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" roundedCircle className="githubIcon" />
                 </a>
      
