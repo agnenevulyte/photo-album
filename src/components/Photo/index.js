@@ -1,40 +1,46 @@
 import React, { Component } from 'react'
+import { fetchPicture } from './fetchPicture'
 
 export default class Photo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id : this.props.match.params.id,
-            image: [],
-            name: '',
-            status: ''
+            // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+            picture: {},
+            loading: true,
+            error: null 
         }
-        // console.log(this.state.id)
     }
 
     componentDidMount() {
-        this.fetchPicture();
-    }
-    // getting id through props-match-params
-    fetchPicture = () => {
-        fetch(`https://rickandmortyapi.com/api/character/${this.state.id}/`)
-        .then(response => response.json())
+        this.setState({ loading: true });
+        fetchPicture(this.props.match.params.id)
         .then(results => {
-            console.log(results);
+            console.log('results:', results);
             this.setState({ 
-                image: results.image,
-                name: results.name,
-                status: results.status
+                picture: results,
+                loading: false
+            })
+        })
+        .catch(error => {
+            console.log(error)
+            this.setState({
+                loading: false,
+                error: error
             })
         })
     }
-
+  
     render() {
+        const { picture, loading, error } = this.state;
+        if (loading) return 'Loading...'
+        if (error) return  `Error! ${error.message}`
+        if (!picture.id) return 'No photo!'
         return (
             <div>
-                <img src={this.state.image} alt={this.state.id}/>
-                <h4>{this.state.name}</h4>
-                <p>{this.state.status}</p>
+                <img src={picture.image} alt={picture.id}/>
+                <h4>{picture.name}</h4>
+                <p>{picture.status}</p>
             </div>
         )
     }
