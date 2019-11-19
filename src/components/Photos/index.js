@@ -24,7 +24,7 @@ export default class Photos extends Component {
             <div>
                 <ul>
                     {this.state.results.map(result =>
-                    <li key={result.id}><img src={result.image}/></li>
+                    <li key={result.id}><img className="image-size" src={result.image}/></li>
                     )}
                 </ul>
             </div>
