@@ -26,7 +26,7 @@ export default class Photos extends Component {
             <div className="pictures flex">
                 <ul>
                     {this.state.results.map(result =>
-                    <li key={result.id}><Link to={`/photos/${result.id}`}><img className="image-size" src={result.image}/></Link></li>
+                    <li key={result.id}><Link to={`/photos/${result.id}`}><img alt={result.id} className="image-size" src={result.image}/></Link></li>
                     )}
                 </ul>
             </div>
