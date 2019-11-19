@@ -9,6 +9,7 @@ import Home from './Home/index'
 import About from  './About'
 import Docs from './Docs'
 import NotFound from '../NotFound'
+import Photo from './Photo'
 
 const Root = () => (
   <Router>
@@ -17,6 +18,7 @@ const Root = () => (
       <Route exact path='/' component={Home}/>
       <Route path='/about' component={About}/>
       <Route path='/docs' component={Docs}/>
+      <Route path="/photos/:id"> <Photo/></Route>
       <Route component={NotFound} />
     </Switch>
     {/* <Route path="/" component={App} /> */}
