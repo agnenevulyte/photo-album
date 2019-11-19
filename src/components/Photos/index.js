@@ -21,7 +21,7 @@ export default class Photos extends Component {
 
     render() {
         return (
-            <div>
+            <div className="pictures flex">
                 <ul>
                     {this.state.results.map(result =>
                     <li key={result.id}><img className="image-size" src={result.image}/></li>
