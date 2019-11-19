@@ -21,7 +21,7 @@ export default class Photos extends Component {
     }
 
     render() {
-        console.log('porps   ', this.props)
+        // console.log('porps   ', this.props)
         return (
             <div className="pictures flex">
                 <ul>
