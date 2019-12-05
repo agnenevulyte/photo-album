@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import {connect} from 'react-redux'
+import {photosLoaded} from '../../actions'
 
-export default class Photos extends Component {
+class Photos extends Component {
     constructor() {
         super();
-        this.state = {
-            results: []
-        }
+        // this.state = {
+        //     results: []
+        // }
     }
 
     componentDidMount() {
@@ -17,7 +19,7 @@ export default class Photos extends Component {
         fetch('https://rickandmortyapi.com/api/character/')
         .then(response => response.json())
         // .then(results => console.log(results.results))
-        .then(results => this.setState({ results: results.results }));
+        .then(results => this.props.photosLoaded(results.results));
     }
 
     render() {
@@ -25,11 +27,21 @@ export default class Photos extends Component {
         return (
             <div className="pictures flex">
                 <ul>
-                    {this.state.results.map(result =>
-                    <li key={result.id}><Link to={`/photos/${result.id}`}><img alt={result.id} className="image-size" src={result.image}/></Link></li>
+                    {this.props.photos.map(photo =>
+                    <li key={photo.id}><Link to={`/photos/${photo.id}`}><img alt={photo.id} className="image-size" src={photo.image}/></Link></li>
                     )}
                 </ul>
             </div>
         )
     }
 }
+
+const mapStateToProps = ({photos}) => ({
+    photos
+}) 
+
+const mapDispatchToProps = {
+    photosLoaded
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Photos)
