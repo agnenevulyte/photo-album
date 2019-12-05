@@ -1,38 +1,38 @@
 import React, { Component } from 'react'
 import { fetchPicture } from './fetchPicture'
+import { connect } from 'react-redux'
+import { pictureLoaded, pictureLoading, pictureLoadingError } from '../../actions' 
 
-export default class Photo extends Component {
+class Photo extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
-            picture: {},
-            loading: true,
-            error: null 
-        }
+        // this.state = {
+        //     // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+        //     picture: {},
+        //     loading: true,
+        //     error: null 
+        // }
     }
 
     componentDidMount() {
-        this.setState({ loading: true });
+        this.props.pictureLoading();
         fetchPicture(this.props.match.params.id)
         .then(results => {
             console.log('results:', results);
-            this.setState({ 
-                picture: results,
-                loading: false
-            })
+            this.props.pictureLoaded( 
+                results
+            )
         })
         .catch(error => {
             console.log(error)
-            this.setState({
-                loading: false,
-                error: error
-            })
+            this.props.pictureLoadingError(
+                error
+            )
         })
     }
   
     render() {
-        const { picture, loading, error } = this.state;
+        const { picture, loading, error } = this.props;
         if (loading) return 'Loading...'
         if (error) return  `Error! ${error.message}`
         if (!picture.id) return 'No photo!'
@@ -45,3 +45,18 @@ export default class Photo extends Component {
         )
     }
 }
+
+
+const mapStateToProps = ({photo:{picture, loading, error}}) => ({
+    picture,
+    loading,
+    error
+})
+const mapDispatchToProps ={
+    pictureLoaded,
+    pictureLoading,
+    pictureLoadingError
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Photo)
