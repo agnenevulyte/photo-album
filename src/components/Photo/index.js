@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { fetchPicture } from "./fetchPicture";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   pictureLoaded,
   pictureLoading,
@@ -8,25 +8,37 @@ import {
 } from "../../actions";
 import { useRouteMatch } from "react-router-dom";
 
-const Photo = ({
-  pictureLoaded,
-  pictureLoading,
-  pictureLoadingError,
-  picture,
-  error,
-  loading,
-}) => {
+const Photo = () => {
+  const { photo } = useSelector((state) => ({
+    photo: state.photo,
+  }));
+
+  const { picture, loading, error } = photo;
+  console.log(picture);
   const match = useRouteMatch();
+  const dispatch = useDispatch();
+
+  const pictureLoadingFunc = () => {
+    dispatch(pictureLoading());
+  };
+  const getData = (res) => {
+    dispatch(pictureLoaded(res));
+  };
+
+  const pictureLoadingErrorFunc = (err) => {
+    dispatch(pictureLoadingError(err));
+  };
+
   useEffect(() => {
-    pictureLoading();
+    pictureLoadingFunc();
     fetchPicture(match.params.id)
       .then((results) => {
-        console.log("results:", results);
-        pictureLoaded(results);
+        // console.log("results:", results);
+        getData(results);
       })
       .catch((error) => {
-        console.log(error);
-        pictureLoadingError(error);
+        // console.log(error);
+        pictureLoadingErrorFunc(error);
       });
   }, []);
   if (loading) return "Loading...";
@@ -42,28 +54,4 @@ const Photo = ({
   );
 };
 
-const mapStateToProps = ({ photo: { picture, loading, error } }) => ({
-  picture,
-  loading,
-  error,
-});
-
-// const mapStateToProps = (state) => {
-//   const { photo } = state;
-//   const { picture, loading, error } = photo;
-//   return { picture, loading, error };
-// };
-
-const mapDispatchToProps = {
-  pictureLoaded,
-  pictureLoading,
-  pictureLoadingError,
-};
-
-// const mapDispatchToProps = (dispatch) => ({
-//   pictureLoaded: (...args) => dispatch(pictureLoaded(...args)),
-//   pictureLoading: (...args) => dispatch(pictureLoading(...args)),
-//   pictureLoadingError: (...args) => dispatch(pictureLoadingError(...args)),
-// });
-
-export default connect(mapStateToProps, mapDispatchToProps)(Photo);
+export default Photo;
