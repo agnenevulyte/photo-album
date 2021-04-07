@@ -14,14 +14,13 @@ const Photo = () => {
   }));
 
   const { picture, loading, error } = photo;
-  console.log(picture);
   const match = useRouteMatch();
   const dispatch = useDispatch();
 
   const pictureLoadingFunc = () => {
     dispatch(pictureLoading());
   };
-  const getData = (res) => {
+  const pictureLoadedFunc = (res) => {
     dispatch(pictureLoaded(res));
   };
 
@@ -29,17 +28,20 @@ const Photo = () => {
     dispatch(pictureLoadingError(err));
   };
 
-  useEffect(() => {
+  const getData = () => {
     pictureLoadingFunc();
     fetchPicture(match.params.id)
       .then((results) => {
         // console.log("results:", results);
-        getData(results);
+        pictureLoadedFunc(results);
       })
       .catch((error) => {
-        // console.log(error);
         pictureLoadingErrorFunc(error);
       });
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
