@@ -48,10 +48,22 @@ const mapStateToProps = ({ photo: { picture, loading, error } }) => ({
   error,
 });
 
+// const mapStateToProps = (state) => {
+//   const { photo } = state;
+//   const { picture, loading, error } = photo;
+//   return { picture, loading, error };
+// };
+
 const mapDispatchToProps = {
   pictureLoaded,
   pictureLoading,
   pictureLoadingError,
 };
+
+// const mapDispatchToProps = (dispatch) => ({
+//   pictureLoaded: (...args) => dispatch(pictureLoaded(...args)),
+//   pictureLoading: (...args) => dispatch(pictureLoading(...args)),
+//   pictureLoadingError: (...args) => dispatch(pictureLoadingError(...args)),
+// });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Photo);
